@@ -19,7 +19,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.rmi.UnexpectedException;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -28,7 +27,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     JwtService jwtService;
 
     @Autowired
-    UserDatailsServiceImpl userDatailsService;
+    UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -45,7 +44,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 userName = jwtService.extractUsername(token);
             }
             if (userName!=null && SecurityContextHolder.getContext().getAuthentication()==null){
-                UserDetails userDetails = userDatailsService.loadUserByUsername(userName);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
                 if (jwtService.validateToken(token,userDetails)){
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(userDetails,null,
