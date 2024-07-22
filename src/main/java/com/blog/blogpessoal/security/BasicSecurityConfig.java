@@ -24,7 +24,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class BasicSecurityConfig {
 
     @Autowired
-    private JwtAuthFilter authFilter;
+    private JwtAuthFilter jwtAuthFilter;
 
 
     @Bean
@@ -66,7 +66,7 @@ public class BasicSecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS).permitAll()
                         .anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(withDefaults());
 
         return http.build();
