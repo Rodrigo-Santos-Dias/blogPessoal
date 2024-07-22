@@ -13,16 +13,15 @@ import org.springframework.web.server.ResponseStatusException;
 import com.blog.blogpessoal.model.Usuario;
 import com.blog.blogpessoal.repository.UsuarioRepository;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
 @Service
-public class UserDatailsServiceImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
-        Optional<Usuario> usuario = usuarioRepository.findByUsuario(userName);
+        Optional<Usuario> usuario = usuarioRepository.findByName(userName);
 
         if (usuario.isPresent())
             return new UserDetailsImpl(usuario.get());
