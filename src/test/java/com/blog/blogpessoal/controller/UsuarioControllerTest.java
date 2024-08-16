@@ -1,6 +1,7 @@
 package com.blog.blogpessoal.controller;
 
 import com.blog.blogpessoal.model.Usuario;
+import com.blog.blogpessoal.model.UsuarioLogin;
 import com.blog.blogpessoal.repository.UsuarioRepository;
 import com.blog.blogpessoal.service.UsuarioService;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -101,6 +103,22 @@ public class UsuarioControllerTest {
 
         assertEquals(HttpStatus.OK,response.getStatusCode());
 
+    }
+    @Test
+    @DisplayName("Logar Usuario")
+    public void deveLogarUmUsuario() {
+        // Criação do corpo da requisição com um usuário existente (que já deve estar cadastrado no sistema)
+        HttpEntity<UsuarioLogin> bodyRequest = new HttpEntity<UsuarioLogin>(new UsuarioLogin("root@root", "rootroot"));
+
+        // Realiza a requisição de login
+        ResponseEntity<UsuarioLogin> bodyResponse = testRestTemplate
+                .exchange("/usuarios/logar", HttpMethod.POST, bodyRequest, UsuarioLogin.class);
+
+        // Verifica se o status da resposta é 200 OK, indicando que o login foi bem-sucedido
+        assertEquals(HttpStatus.OK, bodyResponse.getStatusCode());
+
+        // Opcional: Verifica se o corpo da resposta contém os dados esperados (por exemplo, um token de autenticação)
+        assertNotNull(bodyResponse.getBody().getToken());
     }
 
 }

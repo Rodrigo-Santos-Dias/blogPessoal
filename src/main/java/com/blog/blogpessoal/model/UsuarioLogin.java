@@ -9,6 +9,16 @@ public class UsuarioLogin {
     private String foto;
     private String token;
 
+    public UsuarioLogin(String usuario, String senha) {
+        this.usuario = usuario;
+        this.senha = senha;
+    }
+
+    // Construtor padrão
+    public UsuarioLogin() {
+    }
+
+
     public Long getId() {
         return id;
     }
